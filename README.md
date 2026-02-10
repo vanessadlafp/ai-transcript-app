@@ -1,9 +1,18 @@
 # AI Transcript App
 
-A base for your portfolio piece to land your next AI engineering job.
-AI-powered voice transcription with Whisper and LLM cleaning. Browser-based recording interface with FastAPI backend.
+A **follow-along and improvement project** based on the [AI-Engineer-Skool/local-ai-transcript-app](https://github.com/AI-Engineer-Skool/local-ai-transcript-app) tutorial. The goal is to learn about **speech-to-text (STT)** and **text-to-speech (TTS)** models, experiment with different backends, and evolve the app for lower latency and better performance.
 
-**📺 Recommended Video Tutorial:** For project structure and API details, watch the full tutorial on YouTube: https://youtu.be/WUo5tKg2lnE
+- **Upstream repo & tutorial:** [github.com/AI-Engineer-Skool/local-ai-transcript-app](https://github.com/AI-Engineer-Skool/local-ai-transcript-app)
+- **📺 Video walkthrough:** [YouTube – project structure and API details](https://youtu.be/WUo5tKg2lnE)
+
+This fork starts from the vanilla stack: **Whisper** for STT and an LLM for transcript cleaning, with a browser-based recording UI and FastAPI backend. The roadmap includes **expanding model selection** (e.g. alternative STT/TTS engines) to **reduce latency** and **improve performance** while keeping the app usable locally.
+
+---
+
+## Learning focus: STT & TTS
+
+- **Initial setup:** STT via **Whisper** (English, runs locally).
+- **Planned improvements:** Broaden model choices for both STT and (optionally) TTS to compare latency, accuracy, and resource use; tune for faster transcription and better quality.
 
 ---
 
@@ -39,15 +48,12 @@ The challenge for you is to change this portfolio app to advance the solution an
 
 For example:
 
+- **Expand STT/TTS model selection** — try alternative models to reduce latency and improve performance (this repo’s focus)
 - Modify it for a specific industry
 - Add GPU acceleration + stronger local LLM
 - Use a cloud AI model
 - Real-time transcription/LLM streaming
 - Multi-language support beyond English
-
-**📚 Need help and want to learn more?**
-
-Full courses on AI Engineering are available at [https://aiengineer.community/join](https://aiengineer.community/join)
 
 ---
 
