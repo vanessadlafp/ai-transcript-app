@@ -13,6 +13,16 @@ services:
     environment:
       PYTHONUNBUFFERED: "1"
 
+      # Python/UV cache directories
+      UV_CACHE_DIR: "/tmp/uv-cache"
+      HF_HOME: "/tmp/huggingface"
+      TRANSFORMERS_CACHE: "/tmp/transformers"
+      XDG_CACHE_HOME: "/tmp/cache"
+      
+      # Node/npm cache directories (FIX #2)
+      NPM_CONFIG_CACHE: "/tmp/npm-cache"
+      NPM_CONFIG_PREFIX: "/tmp/npm-global"
+
     command: sleep infinity
 
     # Forward ports for backend and frontend
@@ -21,7 +31,7 @@ services:
       - "3000:3000"
 
     # Use non-root user
-    user: vscode
+    user: "501:20"
 
     depends_on:
       - ollama

@@ -15,25 +15,6 @@ This fork starts from the vanilla stack: **Whisper** for STT and an LLM for tran
 - **Planned improvements:** Broaden model choices for both STT and (optionally) TTS to compare latency, accuracy, and resource use; tune for faster transcription and better quality.
 
 ---
-
-## Branches
-
-This repository uses checkpoint branches to progressively teach AI engineering concepts:
-
-| Branch | Description | Builds On | Learning Resource |
-|--------|-------------|-----------|-------------------|
-| `main` | Complete transcript app with Whisper + LLM cleaning (runs fully locally, beginner friendly) | — | [YouTube Tutorial](https://youtu.be/WUo5tKg2lnE) |
-| `checkpoint-1-fundamentals` | Exercise generation system for learning Python/TypeScript fundamentals | — | [Classroom](https://aiengineer.community/join) |
-| `checkpoint-agentic-openrouter` | Agentic workflow with autonomous tool selection | `main` | [Classroom](https://aiengineer.community/join) |
-| `checkpoint-pydanticai-openrouter` | PydanticAI framework for structured agent development | `checkpoint-agentic-openrouter` | [Classroom](https://aiengineer.community/join) |
-| `checkpoint-rest-mcp-openrouter` | MCP integration with REST API and GitHub Issues | `checkpoint-pydanticai-openrouter` | [Classroom](https://aiengineer.community/join) |
-
-> **Why "openrouter" in branch names?** These branches use [OpenRouter](https://openrouter.ai/) to access powerful cloud models that reliably support tool/function calling. Small local models struggle with agentic workflows.
-
-Switch branches with: `git checkout <branch-name>`
-
----
-
 **Features:**
 
 - 🎤 Browser-based voice recording
@@ -42,121 +23,52 @@ Switch branches with: `git checkout <branch-name>`
 - 🔌 **OpenAI API-compatible** (works with Ollama, LM Studio, OpenAI, or any OpenAI-compatible API)
 - 📋 One-click copy to clipboard
 
-Note that the vanilla version uses a smaller language model running on your CPU.
-This means the AI may not listen to system prompts that well depending on the transcript.
-The challenge for you is to change this portfolio app to advance the solution and make it your own.
+---
 
-For example:
+## Quick Start 
 
-- **Expand STT/TTS model selection** — try alternative models to reduce latency and improve performance (this repo’s focus)
-- Modify it for a specific industry
-- Add GPU acceleration + stronger local LLM
-- Use a cloud AI model
-- Real-time transcription/LLM streaming
-- Multi-language support beyond English
+### 🚀 Dev Container 
+
+1. **Prerequisites:** [Docker Desktop](https://www.docker.com/products/docker-desktop/), [VS Code](https://code.visualstudio.com/), [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
+2. **Open in container:** In VS Code, **"Reopen in Container"** (or `Cmd/Ctrl+Shift+P` → **"Dev Containers: Reopen in Container"**).
+3. **Wait ~5–10 minutes** for build and Ollama model download. The devcontainer creates `backend/.env` and starts Ollama automatically.
+
+Then go to [How to run the app](#how-to-run-the-app).
 
 ---
 
-## Quick Start
+## How to run the app
 
-### 🚀 Dev Container (Recommended)
+After your environment is ready (Dev Container), use **two terminals** and follow these steps.
 
-**This project is devcontainer-first. The easiest way to get started:**
+**Step 1 — Start the backend**
 
-#### 1. Prerequisites
-
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- [VS Code](https://code.visualstudio.com/)
-- [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-
-#### 2. Open in Dev Container
-
-- Click **"Reopen in Container"** in VS Code
-- Or: `Cmd/Ctrl+Shift+P` → **"Dev Containers: Reopen in Container"**
-- Wait ~5-10 minutes for initial build and model download
-
-VS Code automatically:
-
-1. Builds and starts both containers (app + Ollama)
-2. Installs Python and Node.js dependencies
-3. Downloads the Ollama model
-4. Creates `backend/.env` with working defaults
-
-Skip to [Running the App](#running-the-app).
-
----
-
-### ☁️ GitHub Codespaces (No Powerful PC Required)
-
-**Don't have a powerful PC?** GitHub Codespaces provides cloud-based development environments that work with this project's devcontainer.
-
-#### 1. Create a Codespace
-
-- Go to the [repository on GitHub](https://github.com/AI-Engineer-Skool/local-ai-transcript-app)
-- Click the green **"Code"** button → **"Codespaces"** tab → **"Create codespace on main"**
-- The devcontainer enforces at least **4-core**, but if you can select more cores and RAM please do so.
-- Wait ~5-10 minutes for initial setup
-
-#### 2. Access the App
-
-The devcontainer automatically configures everything. Once ready:
-
-- Ports are auto-forwarded (you'll see notifications for ports 3000, 8000, 11434)
-- Click the port 3000 link or go to the **"Ports"** tab to access the frontend
-
-#### 3. For Localhost-Dependent Code
-
-If you need true `localhost` access (some code expects `localhost:8000`):
-
-1. Install the [GitHub Codespaces extension](https://marketplace.visualstudio.com/items?itemName=GitHub.codespaces) in VS Code Desktop
-2. Connect to your running Codespace from VS Code Desktop
-3. Ports will forward to your actual `localhost`
-
-> **💡 Tip:** Stop your Codespace when not in use to conserve free hours. Go to [github.com/codespaces](https://github.com/codespaces) to manage active instances.
-
-> **📺 Video Guide:** Watch the [GitHub Codespaces setup tutorial](https://youtu.be/KkV1O-rXntM) for a walkthrough.
-
-> **🔄 Other Platforms:** Any cloud platform supporting devcontainers (Gitpod, DevPod, etc.) can also be used with this repository's `.devcontainer` configuration.
-
----
-
-### 🛠️ Manual Installation
-
-The devcontainer is the easiest supported setup method for beginners.
-If you choose to install manually, you'll need:
-
-- Python 3.12+, Node.js 24+, [uv](https://docs.astral.sh/uv/), and an LLM server ([Ollama](https://ollama.com/) or [LM Studio](https://lmstudio.ai/))
-- Copy `backend/.env.example` to `backend/.env` and configure
-- Install dependencies with `uv sync` (backend) and `npm install` (frontend)
-- Start your LLM server and pull models: `ollama pull llama3.1:8b`
-
-**For detailed setup, use the devcontainer above.**
-
----
-
-## Running the App
-
-Open **two terminals** and run:
-
-**Terminal 1 - Backend:**
+In the first terminal, from the project root:
 
 ```bash
 cd backend
 uv sync && uv run uvicorn app:app --reload --host 0.0.0.0 --port 8000 --timeout-keep-alive 600
 ```
 
-> **Note:** `uv sync` ensures dependencies are up-to-date (useful after switching branches).`--timeout-keep-alive 600` sets a 10-minute timeout for long audio processing.
+Wait until you see `✅ Ready!` (Whisper and LLM are loaded).  
+`uv sync` keeps dependencies up to date; `--timeout-keep-alive 600` allows long audio processing.
 
-**Terminal 2 - Frontend:**
+**Step 2 — Start the frontend**
+
+In a second terminal, from the project root:
 
 ```bash
 cd frontend
 npm install && npm run dev
 ```
 
-> **Note:** `npm install` ensures dependencies are up-to-date (useful after switching branches).
+Wait until the dev server is running (e.g. "Local: http://localhost:3000").
 
-**Browser:** Open `http://localhost:3000`
+**Step 3 — Open the app**
+
+In your browser, go to **http://localhost:3000**.
+
+You can now record, upload audio, or paste text; use the settings to toggle LLM cleaning and copy the transcript.
 
 ---
 
