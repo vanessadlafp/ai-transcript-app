@@ -18,18 +18,21 @@ export function SettingsPanel({
     <Box header="Settings" icon={Settings}>
       {/* Main LLM Toggle - Always Visible */}
       <div className={styles.toggleSection}>
-        <label className={styles.toggleLabel}>
-          <input
-            type="checkbox"
-            checked={useLLM}
-            onChange={(e) => onToggleLLM(e.target.checked)}
-            className={styles.checkbox}
-          />
+        <button
+          type="button"
+          className={styles.toggleRow}
+          onClick={() => onToggleLLM(!useLLM)}
+          aria-pressed={useLLM}
+          aria-label={useLLM ? 'Disable LLM cleaning' : 'Enable LLM cleaning'}
+        >
           <Sparkles className={styles.toggleIcon} />
           <span className={styles.toggleText}>
             Clean transcription with LLM
           </span>
-        </label>
+          <span className={`${styles.toggle} ${useLLM ? styles.on : ''}`} aria-hidden>
+            <span className={styles.knob} />
+          </span>
+        </button>
         <p className={styles.description}>
           Use AI to clean up transcription (remove filler words, fix grammar)
         </p>
