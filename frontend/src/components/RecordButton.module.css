@@ -11,31 +11,28 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-3);
-  padding: var(--space-5) var(--space-8);
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-  color: white;
-  background: var(--color-primary);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg);
-  transition:
-    transform var(--transition-base),
-    box-shadow var(--transition-base),
-    background var(--transition-base);
-  min-height: 56px;
+  padding: 12px 28px;
+  min-height: 48px;
   min-width: 220px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: var(--font-size-lg);
+  color: white;
+  background: var(--blue);
+  border: none;
+  border-radius: 9px;
+  box-shadow: 0 4px 14px var(--blue-glow);
+  transition: all var(--transition-base);
 }
 
 .button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-xl);
-  background: var(--color-primary-hover);
+  background: var(--blue-mid);
+  box-shadow: 0 6px 20px var(--blue-glow);
 }
 
 .button:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: var(--shadow-md);
 }
 
 .button:disabled {
@@ -44,22 +41,23 @@
 }
 
 .button.recording {
-  background: var(--color-error);
+  background: var(--red);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.25);
   animation: pulse 2s ease-in-out infinite;
 }
 
 .button.recording:hover:not(:disabled) {
-  background: #dc2626;
+  background: #b91c1c;
 }
 
 .button.processing {
-  background: var(--color-text-tertiary);
+  background: var(--text-3);
+  box-shadow: none;
 }
 
 .icon {
   width: 24px;
   height: 24px;
-  animation: none;
 }
 
 .button.processing .icon {
@@ -68,9 +66,8 @@
 
 .hint {
   font-size: var(--font-size-sm);
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-2);
   font-weight: var(--font-weight-medium);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes pulse {
@@ -92,12 +89,11 @@
   }
 }
 
-/* Mobile responsive */
 @media (max-width: 640px) {
   .button {
     min-width: 180px;
-    padding: var(--space-4) var(--space-6);
-    font-size: var(--font-size-lg);
+    padding: 12px 24px;
+    font-size: var(--font-size-base);
   }
 
   .icon {
