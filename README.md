@@ -5,7 +5,7 @@ A **follow-along and improvement project** based on the [AI-Engineer-Skool/local
 - **Upstream repo & tutorial:** [github.com/AI-Engineer-Skool/local-ai-transcript-app](https://github.com/AI-Engineer-Skool/local-ai-transcript-app)
 - **📺 Video walkthrough:** [YouTube – project structure and API details](https://youtu.be/WUo5tKg2lnE)
 
-This fork starts from the vanilla stack: **Whisper** for STT and an LLM for transcript cleaning, with a browser-based recording UI and FastAPI backend. The roadmap includes **expanding model selection** (e.g. alternative STT/TTS engines) to **reduce latency** and **improve performance** while keeping the app usable locally.
+This fork starts from the vanilla stack: **Whisper** for STT and an LLM for transcript cleaning, with a **Streamlit** frontend and FastAPI backend. A **latency tracker** shows Whisper, LLM, and total pipeline times. The roadmap includes **expanding model selection** (e.g. alternative STT/TTS engines) to **reduce latency** and **improve performance** while keeping the app usable locally.
 
 ---
 
@@ -17,11 +17,11 @@ This fork starts from the vanilla stack: **Whisper** for STT and an LLM for tran
 ---
 **Features:**
 
-- 🎤 Browser-based voice recording
+- 🎤 Browser-based voice recording (Streamlit UI)
 - 🔊 English Whisper speech-to-text (runs locally)
 - 🤖 LLM cleaning (removes filler words, fixes errors)
+- ⏱️ **Latency tracker** — Whisper time, LLM time, and total pipeline time
 - 🔌 **OpenAI API-compatible** (works with Ollama, LM Studio, OpenAI, or any OpenAI-compatible API)
-- 📋 One-click copy to clipboard
 
 ---
 
@@ -37,38 +37,53 @@ Then go to [How to run the app](#how-to-run-the-app).
 
 ---
 
-## How to run the app
+## How to run the app (dev)
 
-After your environment is ready (Dev Container), use **two terminals** and follow these steps.
+The app runs inside the dev container. Use **Docker Compose** to start the environment, then run backend and frontend in **two terminals** (both inside the container).
 
-**Step 1 — Start the backend**
+**Step 1 — Start the environment**
 
-In the first terminal, from the project root:
-
-```bash
-cd backend
-uv sync && uv run uvicorn app:app --reload --host 0.0.0.0 --port 8000 --timeout-keep-alive 600
-```
-
-Wait until you see `✅ Ready!` (Whisper and LLM are loaded).  
-`uv sync` keeps dependencies up to date; `--timeout-keep-alive 600` allows long audio processing.
-
-**Step 2 — Start the frontend**
-
-In a second terminal, from the project root:
+From the project root (e.g. repo root on your machine):
 
 ```bash
-cd frontend
-npm install && npm run dev
+docker compose up -d
 ```
 
-Wait until the dev server is running (e.g. "Local: http://localhost:3000").
+**Step 2 — Enter the container**
 
-**Step 3 — Open the app**
+```bash
+docker compose exec app bash
+```
 
-In your browser, go to **http://localhost:3000**.
+**Step 3 — Start the backend** (first terminal, inside container)
 
-You can now record, upload audio, or paste text; use the settings to toggle LLM cleaning and copy the transcript.
+```bash
+cd workspaces/ai-transcript-app/backend
+uv sync
+uv run uvicorn app:app --reload --host 0.0.0.0 --port 8000
+```
+
+Wait until you see `✅ Ready!` (Whisper and LLM are loaded).
+
+- **API docs:** http://localhost:8000/docs  
+- **Health check:** http://localhost:8000/api/status  
+
+**Step 4 — Start the frontend** (new terminal, inside container)
+
+Open a **new terminal**, then:
+
+```bash
+docker compose exec app bash
+cd workspaces/ai-transcript-app/frontend
+export HOME=/tmp
+uv run streamlit run streamlit_app.py --server.port 8501 --server.address 0.0.0.0
+```
+
+- **Frontend app:** http://localhost:8501  
+
+**Step 5 — Use the app**
+
+Open **http://localhost:8501** in your browser. Record or upload audio, run the full pipeline, and see the raw transcript, cleaned transcript, and **latency breakdown** (Whisper, LLM, total time). No extra env vars needed inside the container.
 
 ---
 
@@ -131,7 +146,7 @@ Configure Docker Desktop resources:
   - ⚠️ **Trade-off:** 3b is faster but **significantly worse at cleaning transcripts**
 - **Best alternative:** Use a cloud API like OpenAI for instant responses with excellent quality (edit `.env`)
 
-**Cannot access localhost:3000 or localhost:8000 from host machine:**
+**Cannot access localhost:8501 or localhost:8000 from host machine:**
 
 - **Docker Desktop:** Go to **Settings** → **Resources** → **Network**
 - Enable **"Use host networking"** (may require Docker Desktop restart)
@@ -139,5 +154,5 @@ Configure Docker Desktop resources:
 
 **Port already in use:**
 
-- Backend: Change port with `--port 8001`
-- Frontend: Edit `vite.config.js`, change `port: 3000`
+- Backend: Change port with `--port 8001` (and set `BACKEND_URL` in the Streamlit app if needed)
+- Frontend: Use a different port, e.g. `uv run streamlit run streamlit_app.py --server.port 8502 --server.address 0.0.0.0`

@@ -8,6 +8,7 @@ from pathlib import Path
 
 from faster_whisper import WhisperModel
 from openai import OpenAI
+import time
 
 # Edit system_prompt.txt to change how the LLM cleans transcriptions
 PROMPT_FILE = Path(__file__).parent / "system_prompt.txt"
@@ -82,14 +83,27 @@ class TranscriptionService:
             return text  # Fallback to raw text
 
     def transcribe_file(self, audio_file_path: str, use_llm: bool = True) -> dict:
+        total_start = time.time()
+
+        # Step 1: Whisper
+        t0 = time.time()
         raw_text = self.transcribe(audio_file_path)
-
-        result = {"raw_text": raw_text}
-
+        transcription_time = time.time() - t0
+        
+        # Step 2: LLM
+        t1 = time.time()
         if use_llm and raw_text:
             cleaned_text = self.clean_with_llm(raw_text)
-            result["cleaned_text"] = cleaned_text
+            llm_time = time.time() - t1
         else:
-            result["cleaned_text"] = raw_text
+            cleaned_text = raw_text
+            llm_time = 0
 
-        return result
+        total_time = time.time() - total_start
+
+        return {
+            "raw_text": raw_text,
+            "cleaned_text": cleaned_text,
+            "transcription_time": transcription_time,
+            "llm_time": llm_time,
+            "total_time": total_time}
