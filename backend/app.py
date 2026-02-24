@@ -113,3 +113,20 @@ async def clean_text(request: CleanRequest):
     except Exception as e:
         print(f"❌ LLM cleaning error: {e}")
         raise HTTPException(status_code=500, detail=f"Cleaning failed: {str(e)}") from e
+
+@app.post("/api/full")
+async def full_pipeline(audio: UploadFile):
+    try:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+            tmp.write(await audio.read())
+            tmp_path = tmp.name
+
+        result = service.transcribe_file(tmp_path)
+
+        return {
+            "success": True,
+            **result
+        }
+
+    except Exception as e:
+        return {"success": False, "error": str(e)}

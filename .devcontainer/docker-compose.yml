@@ -18,17 +18,13 @@ services:
       HF_HOME: "/tmp/huggingface"
       TRANSFORMERS_CACHE: "/tmp/transformers"
       XDG_CACHE_HOME: "/tmp/cache"
-      
-      # Node/npm cache directories (FIX #2)
-      NPM_CONFIG_CACHE: "/tmp/npm-cache"
-      NPM_CONFIG_PREFIX: "/tmp/npm-global"
 
     command: sleep infinity
 
     # Forward ports for backend and frontend
     ports:
-      - "8000:8000"
-      - "3000:3000"
+      - "8000:8000"  # FastAPI backend
+      - "8501:8501"  # Streamlit app
 
     # Use non-root user
     user: "501:20"
