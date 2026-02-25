@@ -7,6 +7,12 @@ A **follow-along and improvement project** based on the [AI-Engineer-Skool/local
 
 This fork starts from the vanilla stack: **Whisper** for STT and an LLM for transcript cleaning, with a **Streamlit** frontend and FastAPI backend. A **latency tracker** shows Whisper, LLM, and total pipeline times. The roadmap includes **expanding model selection** (e.g. alternative STT/TTS engines) to **reduce latency** and **improve performance** while keeping the app usable locally.
 
+### Quick demo
+
+Record or upload audio, then run the full pipeline to get the cleaned transcript and latency metrics.
+
+![AI Transcript Pipeline demo](assets/local-ai-transcript-demo.png)
+
 ---
 
 ## Learning focus: STT & TTS
@@ -17,11 +23,18 @@ This fork starts from the vanilla stack: **Whisper** for STT and an LLM for tran
 ---
 **Features:**
 
-- 🎤 Browser-based voice recording (Streamlit UI)
+- 🎤 **Record or upload** — Browser-based voice recording or drag-and-drop upload (WAV, MP3, M4A, OGG; limit 200MB per file)
 - 🔊 English Whisper speech-to-text (runs locally)
 - 🤖 LLM cleaning (removes filler words, fixes errors)
 - ⏱️ **Latency tracker** — Whisper time, LLM time, and total pipeline time
 - 🔌 **OpenAI API-compatible** (works with Ollama, LM Studio, OpenAI, or any OpenAI-compatible API)
+
+**Recent frontend updates:**
+
+- Header updated to **STT + LLM Cleaning** with subtitle: *Full transcription pipeline with real-time latency metrics.*
+- **Input Audio** section with two options side by side: **Record** (microphone) and **Upload** (file picker or drag-and-drop).
+- If both recorded and uploaded audio are present, the app uses the recording and shows a short notice; otherwise it uses whichever source is available.
+- Single **Process Audio →** action for either input; results show cleaned transcript and overall latency.
 
 ---
 
@@ -83,7 +96,7 @@ uv run streamlit run streamlit_app.py --server.port 8501 --server.address 0.0.0.
 
 **Step 5 — Use the app**
 
-Open **http://localhost:8501** in your browser. Record or upload audio, run the full pipeline, and see the raw transcript, cleaned transcript, and **latency breakdown** (Whisper, LLM, total time). No extra env vars needed inside the container.
+Open **http://localhost:8501** in your browser. Use **Record** or **Upload** to provide audio, click **Process Audio →**, and see the raw transcript, cleaned transcript, and **latency breakdown** (Whisper, LLM, total time). No extra env vars needed inside the container.
 
 ---
 

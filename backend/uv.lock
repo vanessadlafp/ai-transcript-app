@@ -14,6 +14,7 @@ dependencies = [
     { name = "python-dotenv" },
     { name = "python-multipart" },
     { name = "streamlit" },
+    { name = "streamlit-audiorec" },
     { name = "uvicorn", extra = ["standard"] },
 ]
 
@@ -34,6 +35,7 @@ requires-dist = [
     { name = "python-multipart", specifier = ">=0.0.9" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.8.0" },
     { name = "streamlit", specifier = ">=1.30.0" },
+    { name = "streamlit-audiorec", specifier = ">=0.1.3" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.32.0" },
 ]
 provides-extras = ["dev"]
@@ -1456,6 +1458,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/be/66/d887ee80ea85f035baee607c60af024994e17ae9b921277fca9675e76ecf/streamlit-1.54.0.tar.gz", hash = "sha256:09965e6ae7eb0357091725de1ce2a3f7e4be155c2464c505c40a3da77ab69dd8", size = 8662292, upload-time = "2026-02-04T16:37:54.734Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/48/1d/40de1819374b4f0507411a60f4d2de0d620a9b10c817de5925799132b6c9/streamlit-1.54.0-py3-none-any.whl", hash = "sha256:a7b67d6293a9f5f6b4d4c7acdbc4980d7d9f049e78e404125022ecb1712f79fc", size = 9119730, upload-time = "2026-02-04T16:37:52.199Z" },
+]
+
+[[package]]
+name = "streamlit-audiorec"
+version = "0.1.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "streamlit" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7b/ad/6bb8db00e816d52a804c451f86784b3606f25561f9921829d549499b4eb1/streamlit-audiorec-0.1.3.tar.gz", hash = "sha256:0d1bf9490a7cd2c90529262f309a59fa566f0b2e83eecf03f26e5c42d241eb51", size = 3362, upload-time = "2023-09-11T17:42:11.148Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d4/bb/3a0f70283264ed42587b5cc23189ccd3ef0ed94c0cf18fe204f6b7b4d36f/streamlit_audiorec-0.1.3-py3-none-any.whl", hash = "sha256:ade3e880ed072733e129438f06c40516304598c7439ecbf8406dbdcd6bd4ac66", size = 872814, upload-time = "2023-09-11T17:42:08.73Z" },
 ]
 
 [[package]]

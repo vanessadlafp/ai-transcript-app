@@ -257,31 +257,61 @@ st.markdown("""
 <div style='margin-bottom: 2.5rem;'>
     <div class='tag'>
         <div class='tag-dot'></div>
-        PIPELINE TEST
+       STT + LLM Cleaning
     </div>
     <h1>AI Transcript<br><span style='color: #1e4dff;'>Pipeline</span></h1>
     <p style='font-size: 15px; color: #4e5470; line-height: 1.7; margin-top: 0.75rem;'>
-        Test the full transcription pipeline with real-time latency metrics.
+       Full transcription pipeline with real-time latency metrics.
     </p>
 </div>
 """, unsafe_allow_html=True)
 
 # Input section
-st.markdown("<div class='eyebrow'>Record Audio</div>", unsafe_allow_html=True)
+st.markdown("<div class='eyebrow'>Input Audio</div>", unsafe_allow_html=True)
 
-audio_file = st.audio_input("Record your voice", label_visibility="collapsed")
+col1, col2 = st.columns(2)
 
-if audio_file is not None:
-    st.audio(audio_file)
+with col1:
+    st.markdown("**🎙 Record**")
+    recorded_audio = st.audio_input("Record your voice", label_visibility="collapsed")
+
+with col2:
+    st.markdown("**📁 Upload**")
+    uploaded_audio = st.file_uploader(
+        "Upload audio",
+        type=["wav", "mp3", "m4a", "ogg"],
+        label_visibility="collapsed"
+    )
+# ═══════════════════════════════════════════════════════════════════════════════
+# INPUT PRIORITY LOGIC
+# ═══════════════════════════════════════════════════════════════════════════════
+audio_bytes = None
+filename = "audio.wav"
+
+if recorded_audio and uploaded_audio:
+    st.warning("⚠️ Using recorded audio (upload ignored)")
+    audio_bytes = recorded_audio.read()
+    filename = "recording.wav"
+
+elif recorded_audio:
+    audio_bytes = recorded_audio.read()
+    filename = "recording.wav"
+
+elif uploaded_audio:
+    audio_bytes = uploaded_audio.read()
+    filename = uploaded_audio.name
+
+
+if audio_bytes is not None:
+    st.audio(audio_bytes)
     
     st.markdown("<br>", unsafe_allow_html=True)
     
     if st.button("Process Audio →"):
         with st.spinner("Processing..."):
             files = {
-                "audio": ("audio.wav", audio_file.read(), "audio/wav")
+                "audio": (filename, audio_bytes)
             }
-            
             try:
                 res = requests.post(
                     f"{BACKEND_URL}/api/full",
