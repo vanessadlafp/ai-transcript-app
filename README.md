@@ -11,7 +11,7 @@ This fork starts from the vanilla stack: **Whisper** for STT and an LLM for tran
 
 Record or upload audio, then run the full pipeline to get the cleaned transcript and latency metrics.
 
-![AI Transcript Pipeline demo](assets/local-ai-transcript-demo.png)
+![AI Transcript Pipeline demo](assets/local-ai-transcript-demo.gif)
 
 ---
 
