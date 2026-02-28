@@ -147,6 +147,44 @@ uv run python benchmark/benchmark.py
 
 **Output:** A CSV with columns such as `transcription_time_mean`, `llm_time_mean`, `total_time_mean`, and their standard deviations, per audio file and setup.
 
+### ⚡ Benchmark Results (Local Testing)
+
+Benchmarked on **3 audio samples** using different Whisper + LLM cleaning configurations.
+
+> ⚠️ These tests were run locally.  
+> Stronger/larger models were **not evaluated** due to local hardware constraints.
+
+#### ⏱ Mean Runtime (seconds)
+
+| Setup | Transcription (s) | LLM (s) | Total (s) | Wall Time (s) |
+|--------|------------------|----------|------------|----------------|
+| whisper:base.en + llm:gemma:2b | 3.33 | 5.67 | 9.00 | 9.06 |
+| whisper:base.en + llm:phi3:mini | 3.31 | 0.01 | 3.32 | 3.35 |
+| whisper:small.en + llm:phi3:mini | 9.58 | 1.63 | 11.20 | 11.27 |
+
+> Values shown are **mean runtime in seconds** across 3 runs.
+
+#### 🔎 Observations
+
+- **LLM choice significantly impacts total runtime.**  
+  `gemma:2b` adds substantial latency compared to `phi3:mini`.
+
+- **Whisper model size has the largest effect on transcription time.**  
+  `small.en` is ~3× slower than `base.en`.
+
+- **Wall time closely matches total time**, indicating minimal unmeasured overhead in the pipeline.
+
+- `phi3:mini` introduces near-zero overhead in the base configuration, making it the fastest overall setup locally.
+
+#### ⚠️ Consideration
+
+The extremely low LLM runtime observed with `phi3:mini` may indicate failed or incomplete execution due to local memory constraints. Further validation is required. **For this reason, `gemma:2b` is retained as the default LLM in the current architecture for now.**
+
+#### 🖥 Environment
+
+- Tested locally (CPU-based inference)
+- Focused on lightweight configurations suitable for on-device usage
+
 ---
 
 ## Troubleshooting

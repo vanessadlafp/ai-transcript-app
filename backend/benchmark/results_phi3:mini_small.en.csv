@@ -1,0 +1,3 @@
+whisper,llm,setup_name,audio_file,n_runs,transcription_time_mean,transcription_time_std,llm_time_mean,llm_time_std,total_time_mean,total_time_std,wall_time_mean,wall_time_std
+small.en,phi3:mini,whisper:small.en + llm:phi3:mini,sample_a.wav,3,10.412807941436768,1.0662426266433638,1.721942663192749,0.0793995835879421,12.134820461273193,1.1181236673713988,12.208559910456339,1.0985937636705625
+small.en,phi3:mini,whisper:small.en + llm:phi3:mini,sample_b.wav,3,8.743161916732788,0.6137855061594181,1.5290231704711914,0.12688579067462205,10.27219065030416,0.7347306986867898,10.32549524307251,0.7310067391798772

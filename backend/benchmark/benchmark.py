@@ -9,12 +9,12 @@ import wave
 # CONFIG
 # ═══════════════════════════════════════════════════════════════════════════════
 BACKEND_URL = "http://localhost:8000/api/full"
-
 AUDIO_DIR = Path("benchmark/audio")
 # SETUP INFO
-LLM_MODEL="gemma3:4b"
-WHISPER_MODEL="base.en"
-
+# LLM_MODEL="gemma:2b"
+LLM_MODEL="phi3:mini"
+# WHISPER_MODEL="base.en"
+WHISPER_MODEL="small.en"
 SETUP = {
         "whisper": WHISPER_MODEL,
         "llm": LLM_MODEL,
@@ -31,7 +31,6 @@ N_RUNS = 4
 WARMUP_RUNS = 1
 
 OUTPUT_CSV = f"benchmark/results_{LLM_MODEL}_{WHISPER_MODEL}.csv"
-
 # ═══════════════════════════════════════════════════════════════════════════════
 # SINGLE RUN
 # ═══════════════════════════════════════════════════════════════════════════════
