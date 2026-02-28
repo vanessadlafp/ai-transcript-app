@@ -122,6 +122,39 @@ To use a different provider, edit `backend/.env`:
 
 ---
 
+## Docker Setup
+
+This repository currently includes a **development container** configuration only.
+
+### Running the Dev Environment
+
+1. Copy the example env file and fill in your values:
+
+   ```bash
+   cp backend/.env.example backend/.env
+   ```
+
+2. Start the dev container:
+
+   ```bash
+   docker compose -f .devcontainer/docker-compose.yml up --build
+   ```
+
+- FastAPI: http://localhost:8000
+- Streamlit: http://localhost:8501
+
+> Requires Docker & Docker Compose. VS Code + Dev Containers extension recommended.
+
+### Production Readiness (TODO)
+
+To make this production-ready, the following changes would be needed:
+
+- **Dockerfile** — add a `production` build stage, create a named non-root user, add an `entrypoint.sh` to start services
+- **docker-compose.yml** — remove workspace volume mount (bake code into image), use `.env` instead of `.env.example`, add `restart: unless-stopped`, add Ollama healthcheck with `condition: service_healthy`, remove hardcoded dev UID
+- **Dependencies** — run `uv sync --no-dev` in prod stage to exclude dev dependencies
+
+---
+
 ## Benchmarking
 
 A benchmark script measures **STT (Whisper)**, **LLM**, and **total pipeline** latency using sample WAV files. It runs multiple passes (with one warmup run discarded), aggregates mean ± std, and writes results to a CSV.
