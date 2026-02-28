@@ -27,6 +27,7 @@ Record or upload audio, then run the full pipeline to get the cleaned transcript
 - 🔊 English Whisper speech-to-text (runs locally)
 - 🤖 LLM cleaning (removes filler words, fixes errors)
 - ⏱️ **Latency tracker** — Whisper time, LLM time, and total pipeline time
+- 📊 **Benchmark script** — Repeatable latency measurements (STT/LLM/total) over sample audio with CSV output
 - 🔌 **OpenAI API-compatible** (works with Ollama, LM Studio, OpenAI, or any OpenAI-compatible API)
 
 **Recent frontend updates:**
@@ -118,6 +119,33 @@ To use a different provider, edit `backend/.env`:
 - `LLM_BASE_URL` - API endpoint
 - `LLM_API_KEY` - API key
 - `LLM_MODEL` - Model name
+
+---
+
+## Benchmarking
+
+A benchmark script measures **STT (Whisper)**, **LLM**, and **total pipeline** latency using sample WAV files. It runs multiple passes (with one warmup run discarded), aggregates mean ± std, and writes results to a CSV.
+
+**Location:** `backend/benchmark/`
+
+**Prerequisites:** Backend must be running (see [How to run the app](#how-to-run-the-app)).
+
+**Run from the backend directory** (e.g. inside the dev container):
+
+```bash
+cd backend
+uv run python benchmark/benchmark.py
+```
+
+**Config** (edit at the top of `backend/benchmark/benchmark.py`):
+
+- `BACKEND_URL` – full-pipeline endpoint (default `http://localhost:8000/api/full`)
+- `LLM_MODEL` / `WHISPER_MODEL` – match your `.env` and Whisper setup
+- `AUDIO_FILES` – list of WAV files in `benchmark/audio/` (e.g. `sample_a.wav`, `sample_b.wav`, `sample_c.wav`)
+- `N_RUNS` – number of runs per file (first run is warmup and excluded)
+- `OUTPUT_CSV` – path for the results CSV (default: `benchmark/results_{LLM_MODEL}_{WHISPER_MODEL}.csv`)
+
+**Output:** A CSV with columns such as `transcription_time_mean`, `llm_time_mean`, `total_time_mean`, and their standard deviations, per audio file and setup.
 
 ---
 
